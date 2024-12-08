@@ -14,7 +14,10 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(cors());
+
+app.use(cors({
+    origin: ['http://localhost:3000', 'http://localhost:5000'], // Add your frontend URLs here
+}));
 app.use(express.json());
 
 // Routes
@@ -27,7 +30,7 @@ app.use('/api/emergency', emergencyRoutes);
 // Add this after all route declarations but before the database connection
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 8000;
 
 // Connect to database
 connectDB()

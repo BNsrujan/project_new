@@ -72,5 +72,11 @@ export default {
       },
     },
   },
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
   plugins: [require("tailwindcss-animate")],
 }

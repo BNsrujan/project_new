@@ -6,7 +6,7 @@ module.exports = {
     './components/**/*.{js,jsx}',
     './app/**/*.{js,jsx}',
     './src/**/*.{js,jsx}',
-	'./index.html',
+    './index.html',
   ],
   theme: {
     container: {
@@ -72,6 +72,12 @@ module.exports = {
         "accordion-up": "accordion-up 0.2s ease-out",
       },
     },
+  },
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   plugins: [require("tailwindcss-animate")],
 }

@@ -1,4 +1,6 @@
-import { useForm } from "react-hook-form"
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import axiosInstance from '@/utils/axiosInstance'; // Adjust the import path as necessary
 import { zodResolver } from "@hookform/resolvers/zod"
 import type { DonorFormValues } from "@/types/donor"
 import { donorSchema } from "@/lib/validations/donor"
@@ -18,7 +20,7 @@ interface DonorFormProps {
 export function DonorForm({ onClose }: DonorFormProps) {
   const { toast } = useToast()
   const navigate = useNavigate()
-  const form = useForm<DonorFormValues>({
+  const { register, handleSubmit } = useForm<DonorFormValues>({
     resolver: zodResolver(donorSchema),
     defaultValues: {
       name: "",
@@ -27,23 +29,29 @@ export function DonorForm({ onClose }: DonorFormProps) {
       address: "",
     },
   })
+  const [loading, setLoading] = useState(false);
 
-  const { handleSubmit } = useDonorSubmit({ 
-    onSuccess: () => {
+  const onSubmit = async (data) => {
+    setLoading(true);
+    try {
+      const response = await axiosInstance.post('/donor/register', data);
+      console.log('Response:', response.data);
       toast({
         title: "Registration successful!",
         description: "Thank you for registering as a donor.",
       })
       navigate('/profile')
-    },
-    onError: () => {
+    } catch (error) {
+      console.error('Error:', error);
       toast({
         title: "Something went wrong.",
         description: "Please try again later.",
         variant: "destructive",
       })
+    } finally {
+      setLoading(false);
     }
-  })
+  };
 
   return (
     <motion.div
@@ -63,11 +71,11 @@ export function DonorForm({ onClose }: DonorFormProps) {
 
         <h2 className="text-2xl font-bold mb-6">Register as a Donor</h2>
 
-        <form onSubmit={form.handleSubmit(handleSubmit)} className="space-y-6">
+        <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           <FormField
             id="name"
             label="Name"
-            register={form.register("name")}
+            register={register("name")}
             error={form.formState.errors.name?.message}
             className="w-full"
           />
@@ -76,7 +84,7 @@ export function DonorForm({ onClose }: DonorFormProps) {
             id="email"
             label="Email"
             type="email"
-            register={form.register("email")}
+            register={register("email")}
             error={form.formState.errors.email?.message}
             className="w-full"
           />
@@ -85,7 +93,7 @@ export function DonorForm({ onClose }: DonorFormProps) {
             id="phone"
             label="Phone"
             type="tel"
-            register={form.register("phone")}
+            register={register("phone")}
             error={form.formState.errors.phone?.message}
             className="w-full"
           />
@@ -98,13 +106,13 @@ export function DonorForm({ onClose }: DonorFormProps) {
           <FormField
             id="address"
             label="Address"
-            register={form.register("address")}
+            register={register("address")}
             error={form.formState.errors.address?.message}
             className="w-full"
           />
 
-          <Button type="submit" className="w-full">
-            Register as Donor
+          <Button type="submit" className="w-full" disabled={loading}>
+            {loading ? 'Submitting...' : 'Register as Donor'}
           </Button>
         </form>
       </div>

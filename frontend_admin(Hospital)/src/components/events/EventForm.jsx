@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Calendar, MapPin, Users, X } from 'lucide-react';
 import { format } from 'date-fns';
-
+import { Input } from '../ui/input';
 export const EventForm = ({ onClose, onSubmit }) => {
   const [formData, setFormData] = useState({
     title: '',
@@ -39,7 +39,7 @@ export const EventForm = ({ onClose, onSubmit }) => {
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label className="block text-sm font-medium text-gray-700">Event Title</label>
-          <input
+          <Input
             type="text"
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
@@ -50,7 +50,7 @@ export const EventForm = ({ onClose, onSubmit }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Date</label>
-          <input
+          <Input
             type="date"
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
@@ -61,7 +61,7 @@ export const EventForm = ({ onClose, onSubmit }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Location</label>
-          <input
+          <Input
             type="text"
             required
             className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring focus:ring-red-200"
@@ -72,7 +72,7 @@ export const EventForm = ({ onClose, onSubmit }) => {
 
         <div>
           <label className="block text-sm font-medium text-gray-700">Expected Donors</label>
-          <input
+          <Input
             type="number"
             required
             min="1"
